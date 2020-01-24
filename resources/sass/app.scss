@@ -6,3 +6,21 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.counters {
+    margin-right: 30px;
+    text-align: center;
+}
+.counters .vote {
+    display: -moz-inline-grid;
+}
+.counters strong {
+    display: block;
+}
+.counters .status {
+    color: #48a868;
+    border-color: rgba(72,168,104,0.5);
+    padding: 4px 7px 5px;
+    border-radius: 3px;
+    border: 1px solid;
+}
