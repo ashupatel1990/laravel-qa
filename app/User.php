@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Questions::class);
     }
+
+    public function getUrlAttribute()
+    {
+        return "#";
+    }
 }
