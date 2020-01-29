@@ -62,21 +62,24 @@ class QuestionsController extends Controller
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function edit(Questions $questions)
+    public function edit($id)
     {
-        //
+        $question = Questions::findOrFail($id);
+        return view('questions.edit', compact('question'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\AskQuestionRequest  $request
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Questions $questions)
+    public function update(AskQuestionRequest $request, Questions $question)
     {
-        //
+        $question->update($request->only('title', 'body'));
+        return redirect()->route('questions.index')
+            ->with('success', 'Your question updated successfully');
     }
 
     /**
