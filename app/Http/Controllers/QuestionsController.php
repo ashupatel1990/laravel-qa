@@ -55,7 +55,6 @@ class QuestionsController extends Controller
     {
         $question->increment('views');
         return view('questions.show', compact('question'));
-        //dd($question);
     }
 
     /**
@@ -64,9 +63,9 @@ class QuestionsController extends Controller
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($question)
     {
-        $question = Questions::findOrFail($id);
+        $question = Questions::findOrFail($question);
         return view('questions.edit', compact('question'));
     }
 
@@ -79,6 +78,9 @@ class QuestionsController extends Controller
      */
     public function update(AskQuestionRequest $request, Questions $question)
     {
+        if (\Gate::denies('update-question', $question)) {
+            abort('403', 'You are not allow to Edit this question');
+        }
         $question->update($request->only('title', 'body'));
         return redirect()->route('questions.index')
             ->with('success', 'Your question updated successfully');
@@ -92,6 +94,9 @@ class QuestionsController extends Controller
      */
     public function destroy(Questions $question)
     {
+        if (\Gate::denies('delete-question', $question)) {
+            abort('403', 'Access Denies');
+        }
         $question->delete();
         session()->flash('success', 'Question Deleted Successfully..');
         return redirect()->route('questions.index');
