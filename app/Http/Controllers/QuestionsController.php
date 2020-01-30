@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Questions;
 use Illuminate\Http\Request;
+use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
 {
@@ -26,18 +27,22 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        //
+        $question = new Questions();
+        return view('questions.create', compact('question'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\AskQuestionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AskQuestionRequest $request)
     {
-        //
+        $request->user()
+            ->questions()
+            ->create($request->only('title', 'body'));
+        return redirect()->route('questions.index')->with('success', 'Your question has been submitted..');
     }
 
     /**
@@ -46,9 +51,11 @@ class QuestionsController extends Controller
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function show(Questions $questions)
+    public function show(Questions $question)
     {
-        //
+        $question->increment('views');
+        return view('questions.show', compact('question'));
+        //dd($question);
     }
 
     /**
@@ -57,21 +64,24 @@ class QuestionsController extends Controller
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function edit(Questions $questions)
+    public function edit($id)
     {
-        //
+        $question = Questions::findOrFail($id);
+        return view('questions.edit', compact('question'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\AskQuestionRequest  $request
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Questions $questions)
+    public function update(AskQuestionRequest $request, Questions $question)
     {
-        //
+        $question->update($request->only('title', 'body'));
+        return redirect()->route('questions.index')
+            ->with('success', 'Your question updated successfully');
     }
 
     /**
@@ -80,8 +90,10 @@ class QuestionsController extends Controller
      * @param  \App\Questions  $questions
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Questions $questions)
+    public function destroy(Questions $question)
     {
-        //
+        $question->delete();
+        session()->flash('success', 'Question Deleted Successfully..');
+        return redirect()->route('questions.index');
     }
 }

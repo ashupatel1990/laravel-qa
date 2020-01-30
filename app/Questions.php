@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Questions extends Model
 {
-    protected $fillable = ['title', 'slug'];
+    protected $fillable = ['title', 'slug', 'body'];
 
     public function user()
     {
@@ -21,7 +21,7 @@ class Questions extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    //Accesor
+    //Accessor
     public function getUrlAttribute()
     {
         return route('questions.show', $this->slug);
@@ -30,5 +30,16 @@ class Questions extends Model
     public function getCreatedDateAttribute()
     {
         return $this->created_at->diffForHumans();
+    }
+
+    public function getStatusAttribute()
+    {
+        if ($this->answers > 0) {
+            if ($this->best_answer_id) {
+                return 'answered-accepted';
+            }
+            return 'answered';
+        }
+        return 'unanswered';
     }
 }

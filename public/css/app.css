@@ -11369,11 +11369,18 @@ a.text-dark:focus {
   display: block;
 }
 
-.counters .status {
-  color: #48a868;
+.counters .status.answered {
+  color: #fff;
+  background-color: #48a868;
   border-color: rgba(72, 168, 104, 0.5);
   padding: 4px 7px 5px;
   border-radius: 3px;
   border: 1px solid;
+}
+
+.counters .status.unanswered {
+  border: 1px solid #48a868;
+  border-radius: 3px;
+  padding: 4px 7px 5px;
 }
 
