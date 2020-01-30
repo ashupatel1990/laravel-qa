@@ -8,6 +8,11 @@ use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -78,9 +83,11 @@ class QuestionsController extends Controller
      */
     public function update(AskQuestionRequest $request, Questions $question)
     {
-        if (\Gate::denies('update-question', $question)) {
-            abort('403', 'You are not allow to Edit this question');
-        }
+        // Using Gate
+        // if (\Gate::denies('update-question', $question)) {
+        //     abort('403', 'You are not allow to Edit this question');
+        // }
+        $this->authorize('update', $question);
         $question->update($request->only('title', 'body'));
         return redirect()->route('questions.index')
             ->with('success', 'Your question updated successfully');
@@ -94,9 +101,12 @@ class QuestionsController extends Controller
      */
     public function destroy(Questions $question)
     {
-        if (\Gate::denies('delete-question', $question)) {
-            abort('403', 'Access Denies');
-        }
+        // Using Gate Authorization
+        // if (\Gate::denies('delete-question', $question)) {
+        //     abort('403', 'Access Denies');
+        // }
+        //Using Policy authorization
+        $this->authorize('delete', $question);
         $question->delete();
         session()->flash('success', 'Question Deleted Successfully..');
         return redirect()->route('questions.index');
