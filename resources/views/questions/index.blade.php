@@ -24,7 +24,7 @@
                                     <strong>{{ $question->votes }}</strong> {{ Str::plural('vote', $question->votes) }}
                                 </div>                            
                                 <div class="status {{ $question->status }}">
-                                    <strong>{{ $question->answers }}</strong> {{ Str::plural('answer', $question->answers) }}
+                                    <strong>{{ $question->answers_count }}</strong> {{ Str::plural('answer', $question->answers_count) }}
                                 </div>                            
                                 <div class="view">
                                     {{ $question->views . " " . Str::plural('view', $question->views) }}
@@ -45,9 +45,9 @@
                                                 <button onclick="return confirm('Are you sure?')" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
                                             </form>
                                         @endif --}}
-                                        @can ('update', $question)
+                                        @if (Auth::user()->can('update-question', $question))
                                             <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">{{ __('Edit') }}</a>
-                                        @endcan
+                                            @endif
                                         @can ('delete', $question)
                                             <form style="display:inline;" method="post" action="{{ route('questions.destroy', $question->id) }}">
                                                 @method('DELETE')

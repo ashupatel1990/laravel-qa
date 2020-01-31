@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                     <h3>{{ $question->title }}</h3>
-                        <div class="ml-auto">
+                        <div class="ml-auto" style="width:13%">
                             <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">All Questions</a>
                         </div>
                     </div>
