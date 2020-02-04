@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Questions extends Model
 {
-    protected $fillable = ['title', 'slug', 'body'];
+    protected $fillable = ['title', 'slug', 'body', 'answers_count'];
 
     public function user()
     {

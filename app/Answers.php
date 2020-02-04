@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answers extends Model
 {
-    // protected $fillable = ['body', 'user_id', 'question_id', 'votes_count'];
+    protected $fillable = ['body', 'user_id'];
 
     public function question()
     {
@@ -27,9 +27,10 @@ class Answers extends Model
     {
         parent::boot();
 
-        static::created(function ($answer) {
-            $answer->question->increment('answers_count');
-            $answer->question->save();            
-        });  
+        // static::created(function ($answers) {
+        //     dd($answers->question);
+        //     $answers->questions->increment('answers_count');
+        //     $answers->questions->save();            
+        // });  
     }
 }
