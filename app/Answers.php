@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answers extends Model
 {
-    protected $fillable = ['body', 'user_id', 'question_id', 'votes_count'];
+    // protected $fillable = ['body', 'user_id', 'question_id', 'votes_count'];
 
     public function question()
     {
@@ -16,5 +16,10 @@ class Answers extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCreatedDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 }

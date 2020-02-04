@@ -47,7 +47,7 @@
                                         @endif --}}
                                         @if (Auth::user()->can('update-question', $question))
                                             <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">{{ __('Edit') }}</a>
-                                            @endif
+                                        @endif
                                         @can ('delete', $question)
                                             <form style="display:inline;" method="post" action="{{ route('questions.destroy', $question->id) }}">
                                                 @method('DELETE')

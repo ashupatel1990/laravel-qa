@@ -14,11 +14,11 @@ class CreateAnswersTable extends Migration
     public function up()
     {
         Schema::create('answers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedInteger('question_id');
+            $table->increments('id');
+            $table->unsignedInteger('questions_id');
             $table->unsignedInteger('user_id');
             $table->text('body');
-            $table->integer('votes_count');
+            $table->integer('votes_count')->default(0);
             $table->timestamps();
         });
     }
