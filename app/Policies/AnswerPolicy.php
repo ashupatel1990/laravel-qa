@@ -10,28 +10,6 @@ class AnswerPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the answers.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Answers  $answers
-     * @return mixed
-     */
-    public function view(User $user, Answers $answers)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create answers.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
-    }
 
     /**
      * Determine whether the user can update the answers.
@@ -46,6 +24,19 @@ class AnswerPolicy
     }
 
     /**
+     * Determine whether the user can accept the answers as best answer.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Answers  $answers
+     * @return mixed
+     */
+    public function accept(User $user, Answers $answers)
+    {
+        return $user->id === $answers->questions->user_id;
+    }
+
+
+    /**
      * Determine whether the user can delete the answers.
      *
      * @param  \App\User  $user
@@ -56,5 +47,4 @@ class AnswerPolicy
     {
         return $user->id === $answers->user_id;
     }
-
 }

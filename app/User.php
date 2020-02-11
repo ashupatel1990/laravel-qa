@@ -28,6 +28,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['avatar', 'url'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -57,5 +58,10 @@ class User extends Authenticatable
         $email = $this->email;
         $size = 32;
         return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?&s=" . $size;
+    }
+
+    public function favourites()
+    {
+        return $this->belongsToMany(Questions::class, 'favourites')->withTimestamps();
     }
 }

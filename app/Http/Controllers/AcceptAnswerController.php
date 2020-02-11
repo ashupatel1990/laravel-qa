@@ -9,7 +9,8 @@ class AcceptAnswerController extends Controller
 {
     public function __invoke(Answers $answer)
     {
-        $answer->question->acceptBestAnswer($answer);
+        $this->authorize('accept', $answer);
+        $answer->questions->acceptBestAnswer($answer);
         return back();
     }
 }

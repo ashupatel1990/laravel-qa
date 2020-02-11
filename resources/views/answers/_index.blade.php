@@ -16,20 +16,28 @@
                             <a title="This question is not useful" class="vote-down off">
                                 <i class="fas fa-caret-down fa-3x"></i>
                             </a>
-                            <a title="Mark this answer as best answer" 
-                                class="{{ $answer->status }} mt-2"
-                                onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit();">
-                                <i class="fas fa-check fa-2x"></i>
-                            </a>
-                        <form id="accept-answer-{{ $answer->id }}" 
-                            method="post"
-                            action="{{ route('answers.accept', $answer->id) }}" 
-                            style="display:none;">
-                            @csrf
-                        </form>
+                            @can ('accept', $answer)
+                                <a title="Mark this answer as best answer" 
+                                    class="{{ $answer->status }} mt-2"
+                                    onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit();">
+                                    <i class="fas fa-check fa-2x"></i>
+                                </a>
+                                <form id="accept-answer-{{ $answer->id }}" 
+                                    method="post"
+                                    action="{{ route('answers.accept', $answer->id) }}" 
+                                    style="display:none;">
+                                    @csrf
+                                </form>
+                            @else 
+                                @if ($answer->is_best)
+                                <a title="Question owner accept this answer as best answer" class="{{ $answer->status }} mt-2">
+                                    <i class="fas fa-check fa-2x"></i>
+                                </a>
+                                @endif
+                            @endcan
                         </div>
                         <div class="media-body">
-                            {!! $answer->body !!}
+                            {!! strip_tags($answer->body) !!}
                             <div class="row">
                                 <div class="col-4">
                                     @can ('update', $answer)
@@ -45,7 +53,8 @@
                                 </div>
                             </div>
 
-                            <div class="float-right">
+                            <user-info :model="{{ $answer }}" label="Answered"></user-info>
+                            {{-- <div class="float-right">
                                 <span class="text-muted">Answered {{ $answer->created_date }}</span>
                                 <div class="media">
                                     <a href=" {{ $answer->user->url }}" class="pr-2">
@@ -57,7 +66,7 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <hr/>

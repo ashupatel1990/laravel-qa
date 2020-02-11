@@ -9,6 +9,8 @@ class Questions extends Model
 {
     protected $fillable = ['title', 'slug', 'body', 'answers_count'];
 
+    protected $appends = ['created_date', 'body_html'];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -52,5 +54,30 @@ class Questions extends Model
     {
         $this->best_answer_id = $answer->id;
         $this->save();
+    }
+
+    public function getBodyHtmlAttribute()
+    {
+        return \Parsedown::instance()->text($this->body);
+    }
+
+    public function favourites()
+    {
+        return $this->belongsToMany(User::class, 'favourites')->withTimestamps(); //, 'question_id', 'user_id');
+    }
+
+    public function isFavourited()
+    {
+        return $this->favourites()->where('user_id', auth()->id())->count() > 0;
+    }
+
+    public function getIsFavouritedAttribute()
+    {
+        return $this->isFavourited();
+    }
+
+    public function getFavouritesCountAttribute()
+    {
+        return $this->favourites->count();
     }
 }

@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 class Answers extends Model
 {
     protected $fillable = ['body', 'user_id'];
-    
-    public function question()
+
+    protected $appends = ['created_date'];
+
+    public function questions()
     {
         return $this->belongsTo(Questions::class);
     }
@@ -26,12 +28,12 @@ class Answers extends Model
     {
         parent::boot();
 
-        static::created(function ($answer) {
-            $answer->question->increment('answers_count');                     
-        });        
+        static::created(function ($answers) {
+             $answers->questions->increment('answers_count');
+        });
 
-        static::deleted(function ($answer) {            
-            $answer->question->decrement('answers_count');            
+        static::deleted(function ($answers) {
+            $answers->questions->decrement('answers_count');
         });
     }
 
@@ -42,6 +44,8 @@ class Answers extends Model
 
     public function getStatusAttribute()
     {
+        //   dd($this->questions);
+        // return 'vote-accepted';
         return $this->isBest() ? 'vote-accepted' : '';
     }
 
@@ -52,6 +56,6 @@ class Answers extends Model
 
     public function isBest()
     {
-        return $this->id === $this->question->best_answer_id;
+        return $this->id === $this->questions->best_answer_id;
     }
 }

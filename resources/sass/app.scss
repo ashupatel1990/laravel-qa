@@ -29,6 +29,12 @@
         border-radius: 3px;
         padding: 4px 7px 5px;
     }
+	.status.answered-accepted {
+        border: 1px solid #48a868;
+        border-radius: 3px;
+        padding: 4px 7px 5px;
+		background: rgb(95, 187, 126);
+    }
 }
 .vote-controls {
     min-width: 60px;

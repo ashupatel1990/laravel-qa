@@ -11384,6 +11384,13 @@ a.text-dark:focus {
   padding: 4px 7px 5px;
 }
 
+.counters .status.answered-accepted {
+  border: 1px solid #48a868;
+  border-radius: 3px;
+  padding: 4px 7px 5px;
+  background: #5fbb7e;
+}
+
 .vote-controls {
   min-width: 60px;
   margin-right: 30px;
