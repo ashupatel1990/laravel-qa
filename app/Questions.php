@@ -80,4 +80,9 @@ class Questions extends Model
     {
         return $this->favourites->count();
     }
+
+    public function votes()
+    {
+        return $this->morphToMany(User::class, 'votable');
+    }
 }
