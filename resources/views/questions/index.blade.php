@@ -35,19 +35,9 @@
                                     {{-- <h3 class="mt-0"> <a href="{{ route('questions.show', $question->id) }}">{{ $question->title }} </a> </h3> --}}
                                     <h3 class="mt-0"> <a href="{{ $question->url }}">{{ $question->title }} </a> </h3>
                                     <div class="ml-auto">
-                                        {{-- @if (Auth::user()->can('update-question', $question))
+                                        @can('update-question', $question)
                                             <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">{{ __('Edit') }}</a>
-                                        @endif
-                                        @if (Auth::user()->can('delete-question', $question))
-                                            <form style="display:inline;" method="post" action="{{ route('questions.destroy', $question->id) }}">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button onclick="return confirm('Are you sure?')" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
-                                            </form>
-                                        @endif --}}
-                                        @if (Auth::user()->can('update-question', $question))
-                                            <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">{{ __('Edit') }}</a>
-                                        @endif
+                                        @endcan
                                         @can ('delete', $question)
                                             <form style="display:inline;" method="post" action="{{ route('questions.destroy', $question->id) }}">
                                                 @method('DELETE')

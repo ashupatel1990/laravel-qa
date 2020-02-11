@@ -18,44 +18,13 @@
                     <hr/>
                     
                     <div class="media">
-                        <div class="d-fex flex-column vote-controls">
-                            <a title="This question is useful" class="vote-up">
-                                <i class="fas fa-caret-up fa-3x"></i>
-                            </a>
-                        <span class="votes-count">{{ $question->votes }}</span>
-                            <a title="This question is not useful" class="vote-down off">
-                                <i class="fas fa-caret-down fa-3x"></i>
-                            </a>
-                            <a title="Click to mark as favorite question (Click again to undo)" 
-                                class="favorite mt-2 {{ Auth::guest() ? 'off' : ($question->is_favourited ? 'favorited': '')}}"
-                                onclick="event.preventDefault(); document.getElementById('favourite-question-{{ $question->id }}').submit();">
-                                <i class="fas fa-star fa-2x"></i>
-                                <span class="favorites-count">{{ $question->favourites_count }}</span>
-                            </a>
-                            <form id="favourite-question-{{ $question->id }}" 
-                                method="post"
-                                action="/questions/{{ $question->id }}/favourite" style="display:none;">
-                                @csrf
-                                @if ($question->is_favourited)
-                                    @method('DELETE')
-                                @endif
-                            </form>
-                        </div>
+                        @include('shared._vote', [
+                            'model' => $question
+                        ])
+                        
                         <div class="media-body">
                             {!! $question->body !!}
-                            <div class="float-right">
-                                <span class="text-muted">Answered {{ $question->created_date }}</span>
-                                <div class="media">
-                                    <a href=" {{ $question->user->url }}" class="pr-2">
-                                        <img src="{{ $question->user->avatar }}" />
-                                    </a>
-                                    <div class="media-body mt-1">
-                                        <a href=" {{ $question->user->url }}">
-                                            {{ $question->user->name }}
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <user-info :model="{{ $question }}" label="Answered"></user-info>
                         </div>
                     </div>
                 </div>
