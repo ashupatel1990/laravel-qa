@@ -67,7 +67,7 @@ export default {
                 this.$toast.success(res.data.message, "Success", { timeout: 3000 });
             })
             .catch(err => {
-                this.$toast.error(err.response.data.message, "Error", { timeout: 3000 });              
+                this.$toast.error(err.response.data.message, "Error", { timeout: 3000 });
             });
         },
 

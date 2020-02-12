@@ -9,7 +9,7 @@ class Questions extends Model
 {
     protected $fillable = ['title', 'slug', 'body', 'answers_count'];
 
-    protected $appends = ['created_date', 'body_html'];
+    protected $appends = ['created_date', 'body_html', 'favourites_count', 'is_favourited'];
     
     public function user()
     {
