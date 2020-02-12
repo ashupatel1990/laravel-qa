@@ -14,10 +14,24 @@ export default {
     computed: {
         isInvalid() {
             return this.body.length < 10
+        },
+        endPoint() {
+            return `/questions/${this.questionId}/answers/${this.id}`
         }
     },
 
     methods: {
+        destroy() {
+            if (confirm('Are you sure you want to delete this answer?')) {
+                axios.delete(this.endPoint)
+                .then(res => {
+                    $(this.$el).fadeOut(1000, () => {
+                        alert(res.data.message)
+                    });
+                });
+            }
+        },
+
         edit() {
             this.beforeEditCache = this.body,
             this.editing = true
@@ -30,7 +44,7 @@ export default {
 
         updateans () {
             console.log('update test');
-            axios.patch(`/questions/${this.questionId}/answers/${this.id}`, {
+            axios.patch(this.endPoint, {
                 body: this.body
             })
             .then(res => {                
@@ -40,7 +54,9 @@ export default {
             .catch(err => {
                 console.log(err.response.data.message);                
             });
-        }, 
+        },
+
+        
     }
 }
 </script>

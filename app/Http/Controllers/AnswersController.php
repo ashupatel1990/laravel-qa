@@ -18,7 +18,7 @@ class AnswersController extends Controller
     {
         // we now added logic inside model to increment answerscount when answer added.
         //$answers = $question->answers_count + 1;
-     //   $question->update(['answers_count' => $answers]);
+        //   $question->update(['answers_count' => $answers]);
         $request->validate(['body' => 'required']);
         $question->answers()->create(['body' => $request->body, 'user_id' => \Auth::id()]);
 
@@ -74,6 +74,11 @@ class AnswersController extends Controller
         //$question->update(['answers_count' => $answers]);
         $answer->delete();
 
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'Answer has beedn deleted!'
+            ]);
+        }
         return back()->with('success', 'Answer deleted');
     }
 }
