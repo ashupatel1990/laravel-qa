@@ -22,14 +22,28 @@ export default {
 
     methods: {
         destroy() {
-            if (confirm('Are you sure you want to delete this answer?')) {
-                axios.delete(this.endPoint)
-                .then(res => {
-                    $(this.$el).fadeOut(1000, () => {
-                        alert(res.data.message)
+            this.$toast.question('Are you sure you want to delete?', "Confirm", {
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999,         
+                position: 'center',
+                buttons: [
+                ['<button><b>YES</b></button>', (instance, toast) => {
+                   axios.delete(this.endPoint)
+                    .then(res => {
+                        $(this.$el).fadeOut(1000, () => {
+                            alert(res.data.message)
+                        });
                     });
-                });
-            }
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    }],
+                ]   
+            });
         },
 
         edit() {
@@ -50,9 +64,10 @@ export default {
             .then(res => {                
                 this.editing = false;
                 this.body = res.data.body
+                this.$toast.success(res.data.message, "Success", { timeout: 3000 });
             })
             .catch(err => {
-                console.log(err.response.data.message);                
+                this.$toast.error(err.response.data.message, "Error", { timeout: 3000 });              
             });
         },
 
