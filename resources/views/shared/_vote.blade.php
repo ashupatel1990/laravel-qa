@@ -13,12 +13,12 @@
 		<span class="favorites-count">{{ $model->favourites_count }}</span>
 	</a> --}}
 	<favourite :model="{{ $model }}"></favourite>
-	<form id="favourite-question-{{ $model->id }}" 
+	{{-- <form id="favourite-question-{{ $model->id }}" 
 		method="post"
 		action="/questions/{{ $model->id }}/favourite" style="display:none;">
 		@csrf
 		@if ($model->is_favourited)
 		    @method('DELETE')
 		@endif
-	</form>
+	</form> --}}
 </div>

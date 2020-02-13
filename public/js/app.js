@@ -3881,11 +3881,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       favouriteCount: this.model.favourites_count,
       isFavourited: this.model.is_favourited,
-      signedIn: true,
       id: this.model.id
     };
   },
   computed: {
+    signedIn: function signedIn() {
+      return window.Auth.signedIn;
+    },
     classes: function classes() {
       return ['favorite', 'mt-2', !this.signedIn ? 'off' : this.isFavourited ? 'favorited' : ''];
     },
@@ -3895,6 +3897,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggle: function toggle() {
+      // checkout if user is not signedin 
+      if (!this.signedIn) {
+        this.$toast.warning('Please login to favourite question', 'Warning!', {
+          timeout: 3000,
+          position: 'bottomLeft'
+        });
+        return;
+      }
+
       this.isFavourited ? this.destroy() : this.create();
     },
     destroy: function destroy() {

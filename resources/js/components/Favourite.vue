@@ -17,12 +17,14 @@ export default {
         return {
             favouriteCount: this.model.favourites_count,
             isFavourited: this.model.is_favourited,
-            signedIn: true,
             id: this.model.id
         }
         
     },
     computed: {
+        signedIn() {
+            return window.Auth.signedIn;
+        },
         classes() {
             return [
                 'favorite', 'mt-2',
@@ -35,6 +37,14 @@ export default {
     },
     methods: {
         toggle() {
+            // checkout if user is not signedin 
+            if (!this.signedIn) {
+                this.$toast.warning('Please login to favourite question', 'Warning!', {
+                    timeout: 3000,
+                    position: 'bottomLeft'
+                });
+                return;
+            }
             this.isFavourited ? this.destroy() : this.create()
         },
 
