@@ -7,7 +7,7 @@ class Answers extends Model
 {
     protected $fillable = ['body', 'user_id'];
 
-    protected $appends = ['created_date'];
+    protected $appends = ['created_date', 'status','is_best'];
 
     public function questions()
     {
@@ -29,7 +29,7 @@ class Answers extends Model
         parent::boot();
 
         static::created(function ($answers) {
-             $answers->questions->increment('answers_count');
+            $answers->questions->increment('answers_count');
         });
 
         static::deleted(function ($answers) {

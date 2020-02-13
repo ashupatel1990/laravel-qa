@@ -7,8 +7,9 @@
 		    <span class="votes-count">{{ $answer->votes_count }}</span>
 		    <a title="This question is not useful" class="vote-down off">
 		        <i class="fas fa-caret-down fa-3x"></i>
-		    </a>
-		    @can ('accept', $answer)
+			</a>
+			<accept :answer="{{ $answer }}"></accept>
+		    {{-- @can ('accept', $answer)
 		        <a title="Mark this answer as best answer" 
 		            class="{{ $answer->status }} mt-2"
 		            onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit();">
@@ -26,7 +27,7 @@
 		            <i class="fas fa-check fa-2x"></i>
 		        </a>
 		        @endif
-		    @endcan
+		    @endcan --}}
 		</div>
 		<div class="media-body">
 			<form v-if="editing" @submit.prevent="updateans">
