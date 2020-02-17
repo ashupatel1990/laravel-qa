@@ -8,6 +8,16 @@ use App\Answers;
 
 class AnswersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
+
+    public function index(Questions $question)
+    {
+        return $question->answers()->with('user')->simplePaginate(3);
+    }
+    
     /**
      * Store a newly created resource in storage.
      *

@@ -1,77 +1,64 @@
+<template>
+    <div class="row mt-4" v-cloak v-if="count > 0">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3> {{ title }} </h3>
+                    </div>
+                    <hr/>
+                    <!-- @include ('layouts._messages') -->
+                    <answer v-for="answer in answers" :answer="answer" :key="answer.id"></answer>
+                    <!-- @foreach ($answers as $answer)
+                        @include('answers._answer', [
+                            'answer' => $answer
+                        ])
+                        <hr/>
+                    @endforeach -->
+                    <div class="text-center mt-3" v-if="nextUrl">
+                        <button @click.prevent="fetch(nextUrl)" class="btn btn-outline-secondary">Load more Answers</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
 <script>
+import Answer from './Answer.vue';
+
 export default {
-    props: ['answer'],
+    props: ['question'],
 
     data() {
-        return {
-            editing: false,
-            body: this.answer.body,
-            id: this.answer.id,
-            questionId: this.answer.questions_id,
-            beforeEditCache: null
+        return  {
+            questionId: this.question.id,
+            count: this.question.answers_count,
+            answers: [],
+            nextUrl: null
         }
     },
+    
+    created () {
+        this.fetch(`/questions/${this.questionId}/answers`);
+    },
+
+     methods: {
+        fetch (endpoint) {
+            axios.get(endpoint)
+            .then(({data}) => {
+                this.answers.push(...data.data);
+                this.nextUrl = data.next_page_url;
+            })
+        }
+    },
+
+    components: {Answer},
+
     computed: {
-        isInvalid() {
-            return this.body.length < 10
-        },
-        endPoint() {
-            return `/questions/${this.questionId}/answers/${this.id}`
+        title() {
+            return this.count + " " + (this.count > 1 ? 'Answers' : 'Answer');
         }
-    },
-
-    methods: {
-        destroy() {
-            this.$toast.question('Are you sure you want to delete?', "Confirm", {
-                close: false,
-                overlay: true,
-                displayMode: 'once',
-                id: 'question',
-                zindex: 999,         
-                position: 'center',
-                buttons: [
-                ['<button><b>YES</b></button>', (instance, toast) => {
-                   axios.delete(this.endPoint)
-                    .then(res => {
-                        $(this.$el).fadeOut(1000, () => {
-                            alert(res.data.message)
-                        });
-                    });
-                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                    }, true],
-                    ['<button>NO</button>', function (instance, toast) {
-                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-                    }],
-                ]   
-            });
-        },
-
-        edit() {
-            this.beforeEditCache = this.body,
-            this.editing = true
-        },
-
-        update() {
-            this.body = this.beforeEditCache,
-            this.editing = false
-        },
-
-        updateans () {
-            console.log('update test');
-            axios.patch(this.endPoint, {
-                body: this.body
-            })
-            .then(res => {                
-                this.editing = false;
-                this.body = res.data.body
-                this.$toast.success(res.data.message, "Success", { timeout: 3000 });
-            })
-            .catch(err => {
-                this.$toast.error(err.response.data.message, "Error", { timeout: 3000 });
-            });
-        },
-
-        
     }
 }
 </script>
